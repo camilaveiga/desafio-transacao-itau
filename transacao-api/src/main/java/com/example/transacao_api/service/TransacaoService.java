@@ -5,10 +5,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import com.example.transacao_api.dto.TransacaoDTO;
-import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class TransacaoService {
 
     private final List<TransacaoDTO> transacoes = new ArrayList<>();
@@ -22,6 +20,18 @@ public class TransacaoService {
         }
         
         transacoes.add(transacaoDTO);
+    }
+
+    public void deletarTransacao(){
+        transacoes.clear();
+    }
+
+    public List<TransacaoDTO> buscarTransacoes(Integer periodo){
+
+        OffsetDateTime dataDateTime = OffsetDateTime.now().minusSeconds(periodo);
+        return transacoes.stream()
+        .filter(transacao -> transacao.dataHora().isAfter(dataDateTime))
+        .toList();
     }
 
 }
